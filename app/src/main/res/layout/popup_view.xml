@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_height="match_parent" xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:orientation="vertical"
+android:background="@color/design_default_color_primary_dark">
+    <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="1人" android:id="@+id/btn1" android:padding="5dp" android:textSize="18sp"/>
+
+    <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="2人" android:id="@+id/btn2" android:padding="5dp" android:textSize="18sp"/>
+
+    <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="3人" android:id="@+id/btn3" android:padding="5dp" android:textSize="18sp"/>
+
+    <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="4人" android:id="@+id/btn4" android:padding="5dp" android:textSize="18sp"/>
+
+    <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="5人" android:id="@+id/btn5" android:padding="5dp" android:textSize="18sp"/>
+
+    <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="6人以上" android:id="@+id/btn6" android:padding="5dp" android:textSize="18sp"/>
+
+
+</LinearLayout>

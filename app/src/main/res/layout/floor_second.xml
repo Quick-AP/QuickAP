@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SecondFloor">
+    <HorizontalScrollView
+        android:id="@+id/SecondFloorContent"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@color/map_background">
+        <TableLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_width="125dp"
+                    android:layout_height="150dp"
+                    android:contentDescription="@string/empty_part" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/seat_outside_19"
+                    android:layout_width="127dp"
+                    android:layout_height="100dp"
+                    android:layout_margin="16dp"
+                    android:contentDescription="@string/seat_outside"
+                    app:srcCompat="@drawable/seat_outside" />
+                <ImageView
+                    android:id="@+id/seat_outside_18"
+                    android:layout_width="127dp"
+                    android:layout_height="100dp"
+                    android:layout_margin="16dp"
+                    android:contentDescription="@string/seat_outside"
+                    app:srcCompat="@drawable/seat_outside" />
+                <ImageView
+                    android:id="@+id/seat_outside_17"
+                    android:layout_width="127dp"
+                    android:layout_height="100dp"
+                    android:layout_margin="16dp"
+                    android:contentDescription="@string/seat_outside"
+                    app:srcCompat="@drawable/seat_outside" />
+                <ImageView
+                    android:id="@+id/seat_outside_16"
+                    android:layout_width="127dp"
+                    android:layout_height="100dp"
+                    android:layout_margin="16dp"
+                    android:contentDescription="@string/seat_outside"
+                    app:srcCompat="@drawable/seat_outside" />
+            </TableRow>
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_width="127dp"
+                    android:layout_height="100dp"
+                    android:layout_margin="16dp"
+                    android:contentDescription="@string/empty_part" />
+                <ImageView
+                    android:id="@+id/seat_inside_14"
+                    android:layout_width="127dp"
+                    android:layout_height="100dp"
+                    android:layout_margin="16dp"
+                    android:contentDescription="@string/seat_inside"
+                    app:srcCompat="@drawable/seat_inside" />
+                <ImageView
+                    android:id="@+id/seat_inside_12"
+                    android:layout_width="127dp"
+                    android:layout_height="100dp"
+                    android:layout_margin="16dp"
+                    android:contentDescription="@string/seat_inside"
+                    app:srcCompat="@drawable/seat_inside" />
+                <ImageView
+                    android:id="@+id/seat_inside_13"
+                    android:layout_width="127dp"
+                    android:layout_height="100dp"
+                    android:layout_margin="16dp"
+                    android:contentDescription="@string/seat_inside"
+                    app:srcCompat="@drawable/seat_inside" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/seat_inside_15"
+                    android:layout_width="127dp"
+                    android:layout_height="100dp"
+                    android:layout_margin="16dp"
+                    android:contentDescription="@string/seat_inside"
+                    app:srcCompat="@drawable/seat_inside" />
+
+                <ImageView
+                    android:layout_width="127dp"
+                    android:layout_height="100dp"
+                    android:layout_margin="16dp"
+                    android:contentDescription="@string/empty_part" />
+
+                <ImageView
+                    android:id="@+id/seat_inside_11"
+                    android:layout_width="127dp"
+                    android:layout_height="100dp"
+                    android:layout_margin="16dp"
+                    android:contentDescription="@string/seat_inside"
+                    app:srcCompat="@drawable/seat_inside" />
+
+                <ImageView
+                    android:id="@+id/stair_down"
+                    android:layout_width="160dp"
+                    android:layout_height="300dp"
+                    android:contentDescription="@string/stair"
+                    app:srcCompat="@drawable/stair_sec" />
+            </TableRow>
+        </TableLayout>
+    </HorizontalScrollView>
+</FrameLayout>
