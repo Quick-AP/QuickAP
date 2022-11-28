@@ -33,7 +33,9 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-
+        <receiver
+                android:name=".design.NotificationClickReceiver">
+        </receiver>
         <activity
             android:name=".activities.FirstFloor"
             android:label="@string/first_floor_label"/>

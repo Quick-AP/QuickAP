@@ -1,4 +1,4 @@
-package com.quickap.quickap.utils;
+package java.com.quickap.quickap.utils;
 
 import android.view.View;
 
@@ -8,24 +8,24 @@ import android.view.View;
  ***/
 
 
-public class QueueRegisterThread implements Runnable {
+public class QueueRegisterThread implements Runnable{
 
-    private View v;
-    private String res;
-    private String phoneNumber;
+        private View v;
+        private String res;
+        private String phoneNumber;
 
-    public void setPhoneNumber(String phoneNumber){
-        this.phoneNumber = phoneNumber;
-    }
-    public void setView(View v){
-        this.v = v;
-    }
-    public String getRes(){
-        return res;
-    }
-    public void run(){
-        res = GetPostUtil.sendPost("http://10.0.2.2:8081/queue/register?phoneNumber=" + phoneNumber, null);
-    }
+        public void setPhoneNumber(String phoneNumber){
+            this.phoneNumber = phoneNumber;
+        }
+        public void setView(View v){
+            this.v = v;
+        }
+        public String getRes(){
+            return res;
+        }
+        public void run(){
+            res = GetPostUtil.sendPost2("http://10.0.2.2:8081/queue/register","{\"phoneNumber\":"+phoneNumber+"}");
+        }
 
 }
 
