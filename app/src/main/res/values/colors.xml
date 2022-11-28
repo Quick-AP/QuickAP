@@ -15,6 +15,11 @@
 
     <color name="map_background">#904B4855</color>
 
+    <color name="main_style_carafe">#523A28</color>
+    <color name="main_style_brown">#A47551</color>
+    <color name="main_style_tan">#D0B49F</color>
+    <color name="main_style_sandDlooar">#E4D4C8</color>
+
 
     <color name="stepper_color">#007aff</color>
     <color name="stepper_click_color">#40007aff</color>

@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,18 +31,19 @@ import com.quickap.quickap.R;
 import com.quickap.quickap.databinding.ActivityReservationBinding;
 import com.quickap.quickap.databinding.PopupViewBinding;
 import com.quickap.quickap.utils.QueueRegisterThread;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.quickap.quickap.utils.QueuequeueThread;
+import com.quickap.quickap.utils.QueueAskThread;
 
-import java.com.quickap.quickap.design.NotificationClickReceiver;
 
-public class ReservationActivity extends AppCompatActivity {
+import com.quickap.quickap.design.NotificationClickReceiver;
+
+public class ReservationActivity extends AppCompatActivity implements View.OnClickListener{
     int count = 1;
 
     private ActivityReservationBinding reservationBinding;
     private PopupViewBinding popupViewBinding;
     View V = null;
-    String phoneNumber = "123456";
+    String phoneNumber1 = "123456";
 
 
     @Override
@@ -51,22 +53,25 @@ public class ReservationActivity extends AppCompatActivity {
         this.popupViewBinding = PopupViewBinding.inflate(getLayoutInflater());
         View reservationView = this.reservationBinding.getRoot();
         setContentView(reservationView);
+
+        Button queueButton = reservationBinding.queuingButton;
+        queueButton.setOnClickListener(this);
     }
 
-    public void leoClick(View view){
-
-
+    @Override
+    public void onClick(View view){
 
         V = view;
         register(V, phoneNumber1);
         int res = queue(V,phoneNumber1);
         if(res != 0){
+//        if(false){
             View successView = getLayoutInflater().inflate(R.layout.success, null);
-            TextView text = successView.findViewById(R.id.text);
+            TextView text = successView.findViewById(R.id.QueueSuccessHint);
             int rank = queue(V, phoneNumber1);
             text.setText("Your rank is:"+rank);
             PopupWindow sucessWindow = new PopupWindow(successView, ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT,true);
-            sucessWindow.showAsDropDown(V,(int)(0.75*V.getWidth()),2*V.getHeight());
+            sucessWindow.showAsDropDown(V,(int)(0.5*V.getWidth()),(int)0.5*V.getHeight());
 
 
 
@@ -85,10 +90,19 @@ public class ReservationActivity extends AppCompatActivity {
                         .setSmallIcon(R.mipmap.ic_launcher)
                         .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher));
 
-                Intent intent =new Intent (ReservationActivity.this, NotificationClickReceiver.class);
-                PendingIntent pendingIntent =PendingIntent.getBroadcast(ReservationActivity.this, 0, intent, 0);
-                builder.setContentIntent(pendingIntent);
-                notification = builder.build();
+               try{
+                   Intent intent =new Intent (ReservationActivity.this, NotificationClickReceiver.class);
+                   PendingIntent pendingIntent;
+                   if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+                       pendingIntent = PendingIntent.getActivity(ReservationActivity.this, 123, intent, PendingIntent.FLAG_IMMUTABLE);
+                   } else {
+                       pendingIntent = PendingIntent.getActivity(ReservationActivity.this, 123, intent, PendingIntent.FLAG_ONE_SHOT);
+                   }
+                   builder.setContentIntent(pendingIntent);
+                   notification = builder.build();
+               }catch (Exception e){
+                   System.out.println();
+               }
             }else{
                 NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                         .setContentTitle("Your can register table now")
@@ -98,17 +112,23 @@ public class ReservationActivity extends AppCompatActivity {
                         .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher));
                 Intent intent =new Intent (ReservationActivity.this,NotificationClickReceiver.class);
                 PendingIntent pendingIntent =PendingIntent.getBroadcast(ReservationActivity.this, 0, intent, 0);
-                builder.setContentIntent(pendingIntent);
-                notification = builder.build();
+//                builder.setContentIntent(pendingIntent);
+//                notification = builder.build();
             }
             ask(manager,notification, phoneNumber1);
 
         }else{
-            View successView = getLayoutInflater().inflate(R.layout.success, null);
-            TextView text = successView.findViewById(R.id.text);
-            text.setText("You can register:"+res);
-            PopupWindow sucessWindow = new PopupWindow(successView, ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT,true);
-            sucessWindow.showAsDropDown(V,(int)(0.75*V.getWidth()),2*V.getHeight());
+            Intent intent= new Intent();
+            intent.setClass(ReservationActivity.this, com.quickap.quickap.activities.FirstFloor.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+
+
+//            View successView = getLayoutInflater().inflate(R.layout.success, null);
+//            TextView text = successView.findViewById(R.id.QueueSuccessHint);
+//            text.setText("You can register:"+res);
+//            PopupWindow sucessWindow = new PopupWindow(successView, ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT,true);
+//            sucessWindow.showAsDropDown(V,(int)(0.75*V.getWidth()),2*V.getHeight());
         }
 
     }

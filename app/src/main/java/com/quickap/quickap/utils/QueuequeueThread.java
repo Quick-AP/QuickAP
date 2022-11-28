@@ -1,4 +1,4 @@
-package java.com.quickap.quickap.utils;
+package com.quickap.quickap.utils;
 
 import android.view.View;
 import org.json.JSONException;

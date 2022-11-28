@@ -1,4 +1,4 @@
-package java.com.quickap.quickap.design;
+package com.quickap.quickap.design;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
