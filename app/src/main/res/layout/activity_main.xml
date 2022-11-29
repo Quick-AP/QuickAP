@@ -14,38 +14,6 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-<!--    <LinearLayout-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content">-->
-
-<!--                <Button-->
-<!--                    android:id="@+id/jumpToMap"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_marginEnd="215dp"-->
-<!--                    android:layout_marginBottom="405dp"-->
-<!--                    android:text="Switch to map"-->
-<!--                    style="?android:attr/buttonBarButtonStyle" />-->
-
-<!--                <Button-->
-<!--                    android:id="@+id/jumpToReservation"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_marginEnd="215dp"-->
-<!--                    android:layout_marginBottom="405dp"-->
-<!--                    android:text="Switch to Reservation"-->
-<!--                    style="?android:attr/buttonBarButtonStyle" />-->
-
-<!--                <Button-->
-<!--                    android:id="@+id/jumpToMenu"-->
-<!--                    style="?android:attr/buttonBarButtonStyle"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_marginEnd="215dp"-->
-<!--                    android:layout_marginBottom="405dp"-->
-<!--                    android:text="Switch to Menu" />-->
-<!--    </LinearLayout>-->
-
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"

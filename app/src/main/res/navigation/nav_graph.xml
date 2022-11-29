@@ -7,22 +7,22 @@
 
     <fragment
         android:id="@+id/FirstFloor"
-        android:name="com.example.map.FirstFloor"
+        android:name="com.quickap.quickap.activities.FirstFloor"
         android:label="@string/first_floor_label"
         tools:layout="@layout/floor_first">
 
         <action
-            android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
+            android:id="@+id/action_FirstFloor_to_SecondFloor"
+            app:destination="@id/SecondFloor" />
     </fragment>
     <fragment
-        android:id="@+id/SecondFragment"
-        android:name="com.example.map.SecondFloor"
+        android:id="@+id/SecondFloor"
+        android:name="com.quickap.quickap.activities.SecondFloor"
         android:label="@string/second_floor_label"
         tools:layout="@layout/floor_second">
 
         <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
+            android:id="@+id/action_SecondFloor_to_FirstFloor"
             app:destination="@id/FirstFloor" />
     </fragment>
 </navigation>
