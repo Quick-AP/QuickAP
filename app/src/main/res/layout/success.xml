@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_height="match_parent" xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:orientation="vertical">
+    <TextView
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:id="@+id/QueueSuccessHint"
+        android:text="Queuing Success"
+        android:textStyle="bold|italic"
+        android:typeface="serif"
+        android:padding="5dp"
+        android:textSize="30sp"
+        android:gravity="center"
+        android:background="@drawable/note"/>
+
+
+
+</LinearLayout>
