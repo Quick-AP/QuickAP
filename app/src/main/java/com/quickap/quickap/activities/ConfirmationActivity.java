@@ -1,6 +1,7 @@
 package com.quickap.quickap.activities;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -14,6 +15,8 @@ import java.util.Locale;
 public class ConfirmationActivity extends AppCompatActivity {
 
     private ActivityConfirmationBinding binding;
+    private int tableId;
+    private MenuController menuController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,12 +27,23 @@ public class ConfirmationActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            MenuController menuController = extras.getParcelable("MENU_CONTROLLER");
+            this.menuController = extras.getParcelable("MENU_CONTROLLER");
+            this.tableId = extras.getInt("tableId");
             Toast.makeText(
                     getApplicationContext(),
                     String.format(Locale.ENGLISH, "%.2f", menuController.getTotalPrice()),
                     Toast.LENGTH_SHORT).show();
+            Log.d("CONFIRMATION", getOrderJsonSummary());
         }
+        else {
+            throw new RuntimeException("Failed to parse extra bundles");
+        }
+    }
 
+
+    private String getOrderJsonSummary() {
+        return String.format(Locale.ENGLISH, "{\"tableId\":%d,\"foodIDList\":%s}",
+                this.tableId,
+                this.menuController.getFoodListJson());
     }
 }

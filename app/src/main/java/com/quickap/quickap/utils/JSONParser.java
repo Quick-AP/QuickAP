@@ -8,6 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 
@@ -15,23 +16,23 @@ public class JSONParser {
 
     public static JSONObject getJsonFromURL(String urlString) {
         try {
-
             URL url = new URL(urlString);
-
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(url.openConnection().getInputStream()));
-
-            StringBuilder stringBuffer = new StringBuilder();
-            String line;
-            while ((line = bufferedReader.readLine()) != null)
-                stringBuffer.append(line);
-
-            return new JSONObject(stringBuffer.toString());
-        } catch (Exception e) {
+            return getJsonFromBufferedReader(bufferedReader);
+        } catch (IOException | JSONException e) {
             Log.e("JSONParser",
                     "Failed to JSON from "+urlString+":"+e.getMessage());
 
             return null;
         }
+    }
+
+    public static JSONObject getJsonFromBufferedReader(BufferedReader bufferedReader) throws IOException, JSONException {
+        StringBuilder stringBuffer = new StringBuilder();
+        String line;
+        while ((line = bufferedReader.readLine()) != null)
+            stringBuffer.append(line);
+        return new JSONObject(stringBuffer.toString());
     }
 
     public static FoodModel convertJSONObjectToFoodModel(JSONObject food) throws JSONException {

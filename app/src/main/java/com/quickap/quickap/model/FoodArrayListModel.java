@@ -44,6 +44,14 @@ public class FoodArrayListModel {
                     "            \"foodType\": \"Pizza\",\n" +
                     "            \"price\": 68.0,\n" +
                     "            \"imageUrl\": \"https://pic.quanjing.com/m9/97/QJ6116758155.jpg@!350h\"\n" +
+                    "        },\n" +
+                    "        {\n" +
+                    "            \"id\": 4,\n" +
+                    "            \"foodId\": \"PZ02\",\n" +
+                    "            \"name\": \"Random Generic Pizza2\",\n" +
+                    "            \"foodType\": \"Pizza\",\n" +
+                    "            \"price\": 74.0,\n" +
+                    "            \"imageUrl\": \"https://pic.quanjing.com/m9/97/QJ6116758155.jpg@!350h\"\n" +
                     "        }\n" +
                     "    ],\n" +
                     "    \"comment\": null,\n" +

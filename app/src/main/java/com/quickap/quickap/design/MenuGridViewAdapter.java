@@ -35,7 +35,7 @@ public class MenuGridViewAdapter extends ArrayAdapter<FoodModel> implements Filt
     private final MenuController menuController;
     private final MenuActivity menuActivity;
     private List<FoodModel> foodModels;
-    private List<FoodModel> foodModelsFilterList;
+    private final List<FoodModel> foodModelsFilterList;
     private ValueFilter valueFilter;
 
     public MenuGridViewAdapter(@NonNull MenuActivity menuActivity, ArrayList<FoodModel> foodModels, MenuController menuController) {
@@ -62,26 +62,34 @@ public class MenuGridViewAdapter extends ArrayAdapter<FoodModel> implements Filt
     }
 
 
+    /**
+     * Render a custom view via menu_grid_view_item_list and the given Food List.
+     * @param position position of food menu item.
+     * @param convertView view to render food card onto.
+     * @param parent the parent view group.
+     * @return the populated convert view.
+     */
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
         HolderValue holderValue;
-
         FoodModel food = getItem(position);
 
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext())
                     .inflate(R.layout.menu_grid_view_item_list, parent, false);
-            int initialAmount = this.menuController.getAmountOfFood(food.getFoodID());
-
-            holderValue = new HolderValue(convertView, initialAmount);
+            holderValue = new HolderValue(convertView);
             convertView.setTag(holderValue);
         }
         else {
             holderValue = (HolderValue) convertView.getTag();
         }
 
+        int initialAmount = this.menuController.getAmountOfFood(food.getFoodID());
+        Log.d("DEBUG: initial amount", String.format(Locale.ENGLISH, "%s:%d",
+                food.getFoodID(), initialAmount));
+        holderValue.updateCalculatedPrice(initialAmount, food.getPrice());
 
         holderValue.nameTextView.setText(food.getName());
         holderValue.priceTextView.setText(String.format(
@@ -90,24 +98,14 @@ public class MenuGridViewAdapter extends ArrayAdapter<FoodModel> implements Filt
                 food.getPrice()));
 
         holderValue.stepperMinus.setOnClickListener(v -> {
-            if (holderValue.amount != 0)
-                holderValue.amount--;
-            holderValue.updateAddButton();
+            this.menuController.removeFood(food);
+            notifyDataSetChanged();
         });
 
         holderValue.stepperPlus.setOnClickListener(v -> {
-            holderValue.amount++;
-            holderValue.updateAddButton();
+            this.menuController.addFood(food);
+            notifyDataSetChanged();
         });
-
-        holderValue.addButton.setOnClickListener(v-> {
-            this.menuController.setFood(food, holderValue.amount);
-            this.menuActivity.updateTotalPrice(String.format(Locale.ENGLISH, "%.2f", this.menuController.getTotalPrice()));
-        });
-
-
-        holderValue.updateAddButton();
-
 
         // TODO: Load Drawable from Json URLS and display
         if (food.isOnline()) {
@@ -130,12 +128,8 @@ public class MenuGridViewAdapter extends ArrayAdapter<FoodModel> implements Filt
             }
         }
         else {
-
-
-
             holderValue.menuImage.setImageResource(food.getFoodImageID());
         }
-
 
         return convertView;
     }
@@ -178,30 +172,29 @@ public class MenuGridViewAdapter extends ArrayAdapter<FoodModel> implements Filt
     }
 
     private static class HolderValue {
-        private final ImageView menuImage;
-        private final TextView nameTextView;
-        private final TextView priceTextView;
-        private final Button stepperMinus;
-        private final Button stepperPlus;
-        private final Button addButton;
-        private int amount;
+        public ImageView menuImage;
+        public TextView nameTextView;
+        public TextView priceTextView;
+        public Button stepperMinus;
+        public Button stepperPlus;
+        public Button calculatedPrice;
 
-
-        public HolderValue(View view, int initialAmount) {
+        public HolderValue(View view) {
             menuImage = view.findViewById(R.id.menu_image_id);
             nameTextView = view.findViewById(R.id.menu_item_name);
             priceTextView = view.findViewById(R.id.menu_item_price);
             stepperMinus = view.findViewById(R.id.menu_item_stepper_minus);
             stepperPlus = view.findViewById(R.id.menu_item_stepper_plus);
-            addButton = view.findViewById(R.id.menu_item_button_add);
-            amount = initialAmount;
+            calculatedPrice = view.findViewById(R.id.menu_item_button_calculated_price);
         }
 
-        void updateAddButton() {
-            this.addButton.setText(String.format(
+        void updateCalculatedPrice(int amount, double price) {
+            this.calculatedPrice.setText(String.format(
                     Locale.ENGLISH,
-                    "ADD %d",
-                    amount
+                    "%.2f x %d = %.2f RMB",
+                    price,
+                    amount,
+                    amount * price
             ));
         }
 
@@ -254,4 +247,10 @@ public class MenuGridViewAdapter extends ArrayAdapter<FoodModel> implements Filt
         }
     }
 
+    @Override
+    public void notifyDataSetChanged() {
+        super.notifyDataSetChanged();
+        this.menuActivity.updateTotalPrice(
+                String.format(Locale.ENGLISH, "%.2f", this.menuController.getTotalPrice()));
+    }
 }

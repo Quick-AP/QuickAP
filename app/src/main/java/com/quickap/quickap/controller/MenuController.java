@@ -155,4 +155,20 @@ public class MenuController implements Parcelable {
         else
             return 0;
     }
+
+    public String getFoodListJson() {
+        StringBuilder foodListJson = new StringBuilder();
+        foodListJson.append("[");
+        for (Map.Entry<String, MenuItem> entry: orderMap.entrySet()) {
+            for (int i = 0; i < entry.getValue().amount; i++) {
+                foodListJson.append("\"");
+                foodListJson.append(entry.getKey());
+                foodListJson.append("\",");
+            }
+        }
+        foodListJson.setCharAt(foodListJson.length()-1, ']');
+        return foodListJson.toString();
+    }
+
+
 }

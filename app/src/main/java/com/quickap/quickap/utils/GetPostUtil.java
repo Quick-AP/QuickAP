@@ -3,6 +3,9 @@ package com.quickap.quickap.utils;
 
 import android.util.Log;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.*;
 import java.net.*;
 import java.io.BufferedReader;
@@ -73,6 +76,20 @@ public class GetPostUtil {
             e.printStackTrace();
         }
         return result;
+    }
+
+    public static JSONObject sendPostJSON(String url, String params) {
+        InputStream inputStream = getInputStreamPost(url,params);
+        JSONObject resultJson = null;
+        try {
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream,"utf-8"));
+            resultJson = JSONParser.getJsonFromBufferedReader(bufferedReader);
+            httpURLConnection.disconnect();
+        } catch (NullPointerException | IOException | JSONException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return resultJson;
     }
     /**
      * 获取服务端的数据，以InputStream返回

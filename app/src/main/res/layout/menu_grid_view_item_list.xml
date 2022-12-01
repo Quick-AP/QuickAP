@@ -6,7 +6,8 @@
     app:cardCornerRadius="6dp"
     app:cardElevation="6dp"
     app:cardUseCompatPadding="true"
-    app:cardPreventCornerOverlap="true">
+    app:cardPreventCornerOverlap="true"
+    app:cardBackgroundColor="@color/main_style_sandDlooar">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -37,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
                 android:text="PlaceHolder Name"
-                android:textColor="@color/black"
+                android:textColor="@color/main_style_carafe"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -52,7 +53,7 @@
                 android:layout_height="match_parent"
                 android:shadowRadius="1"
                 android:text="0.00"
-                android:textColor="@color/black"
+                android:textColor="@color/main_style_carafe"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -67,12 +68,13 @@
 
 
             <Button
-                android:id="@+id/menu_item_button_add"
+                android:id="@+id/menu_item_button_calculated_price"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:background="@drawable/menu_button"
-                android:text="ADD 0"
-                android:textColor="@color/stepper_color"
+                android:text=""
+                android:clickable="false"
+                android:textColor="@color/main_style_carafe"
                 android:textSize="18sp" />
 
 
@@ -87,7 +89,7 @@
                 android:layout_height="match_parent"
                 android:background="@drawable/menu_left_button"
                 android:text="＋"
-                android:textColor="@color/stepper_color"
+                android:textColor="@color/main_style_carafe"
                 android:textSize="18sp" />
 
             <Button
@@ -96,7 +98,7 @@
                 android:layout_height="match_parent"
                 android:background="@drawable/menu_right_button"
                 android:text="－"
-                android:textColor="@color/stepper_color"
+                android:textColor="@color/main_style_carafe"
                 android:textSize="18sp"/>
 
         </LinearLayout>

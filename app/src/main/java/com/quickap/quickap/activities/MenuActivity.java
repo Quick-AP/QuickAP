@@ -15,6 +15,10 @@ import com.quickap.quickap.controller.MenuController;
 import com.quickap.quickap.databinding.ActivityMenuBinding;
 import com.quickap.quickap.design.MenuGridViewAdapter;
 import com.quickap.quickap.model.FoodArrayListModel;
+import com.quickap.quickap.utils.RegisterTableThread;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class MenuActivity extends AppCompatActivity {
 
@@ -41,11 +45,16 @@ public class MenuActivity extends AppCompatActivity {
         Log.d("DEBUG: tableId passing", String.valueOf(this.tableID));
         Log.d("DEBUG: phoneNumber passing", String.valueOf(this.phoneNumber));
 
-        // TODO: Register table API call
+        // TODO: UNCOMMENT THIS
+//        if(registerTable(this.phoneNumber, this.tableID) != 0) {
+//            Log.d("DEBUG: FAILED TO REGISTER TABLE", String.valueOf(this.tableID));
+//            throw new RuntimeException("Failed to register table " + this.tableID);
+//        }
 
         // TODO: Load Food Array List from json
         MenuGridViewAdapter menuGridViewAdapter = new MenuGridViewAdapter(
                 MenuActivity.this,
+//                new FoodArrayListModel().getFoodArrayListFromURL("URL"),
                 new FoodArrayListModel().generateDummyData(),
                 this.menuController
         );
@@ -116,5 +125,24 @@ public class MenuActivity extends AppCompatActivity {
                 }).setNegativeButton("No", null).show();
     }
 
+
+    private int registerTable(String phoneNumber, int tableId){
+        RegisterTableThread tableStateThread = new RegisterTableThread();
+        tableStateThread.setPhoneNumber(phoneNumber);
+        tableStateThread.setTableId(tableId);
+        Thread thread = new Thread(tableStateThread);
+        thread.start();
+
+        while(tableStateThread.getResponse() == null){}
+
+        JSONObject res = tableStateThread.getResponse();
+        try {
+            return res.getInt("status");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return -1;
+    }
 
 }

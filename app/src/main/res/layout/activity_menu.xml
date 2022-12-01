@@ -4,14 +4,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.MenuActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/main_style_carafe">
 
     <SearchView
         android:id="@+id/menu_search_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clickable="true"
-        android:focusable="true" />
+        android:focusable="true"
+        android:background="@color/main_style_sandDlooar"
+        android:paddingBottom="5dp"/>
 
     <LinearLayout
         android:orientation="horizontal"
@@ -30,35 +33,50 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/shadow_bottom"
-        android:gravity="bottom|center_horizontal"
+        android:background="@color/main_style_brown"
+        android:gravity="center"
         android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Total Price:  "
-            android:textSize="25sp"
-            android:textStyle="bold" />
+        <Space
+            android:layout_width="1sp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
 
-        <TextView
-            android:id="@+id/menu_total_price"
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="0.00"
-            android:textSize="25sp" />
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Total Price:  "
+                android:textSize="25sp"
+                android:textStyle="bold"
+                android:textColor="@color/main_style_sandDlooar"/>
+            <TextView
+                android:id="@+id/menu_total_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0.00"
+                android:textSize="25sp"
+                android:textColor="@color/main_style_sandDlooar"/>
+        </LinearLayout>
+
 
         <Space
             android:layout_width="50sp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            />
+            android:layout_weight="1" />
 
         <Button
             android:id="@+id/menu_order_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/main_style_carafe"
             android:text="Order!" />
+        <Space
+            android:layout_width="1sp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
 
     </LinearLayout>
 
