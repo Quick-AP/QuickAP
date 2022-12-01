@@ -11,6 +11,7 @@ import com.quickap.quickap.controller.MenuController;
 import com.quickap.quickap.databinding.ActivityConfirmationBinding;
 
 import java.util.Locale;
+import java.util.Map;
 
 public class ConfirmationActivity extends AppCompatActivity {
 
@@ -38,6 +39,22 @@ public class ConfirmationActivity extends AppCompatActivity {
         else {
             throw new RuntimeException("Failed to parse extra bundles");
         }
+
+        binding.confirmationTextView.setText(getOrderSummary());
+    }
+
+    private String getOrderSummary() {
+        StringBuilder orderSummary = new StringBuilder();
+
+        for (MenuController.MenuItem item : this.menuController.getOrderMap().values()) {
+            orderSummary.append(
+                    String.format(
+                            Locale.ENGLISH, "%d X\t%-30s\t= %.2f RMB\n",
+                            item.amount, item.name, item.amount  *item.price)
+            );
+        }
+        orderSummary.append(String.format(Locale.ENGLISH, "Total Price: %.2f", this.menuController.getTotalPrice()));
+        return orderSummary.toString();
     }
 
 

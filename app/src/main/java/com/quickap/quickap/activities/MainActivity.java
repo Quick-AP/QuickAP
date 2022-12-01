@@ -1,18 +1,30 @@
 package com.quickap.quickap.activities;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatEditText;
 import androidx.core.app.ActivityCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -66,20 +78,67 @@ public class MainActivity extends AppCompatActivity {
         return isMobile(phoneNumber) ? phoneNumber : null;
     }
 
-
     /**
      * Display pop-up and save obtained phone number in a given String array.
      * @param phoneNumber Single element String array to save the user inputted phone number
      */
-    private void getPhoneNumberFromUser(String[] phoneNumber) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Please input your phone number to begin using!");
+    public void getPhoneNumberFromUser(String[] phoneNumber){
+
+
+        final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setTitle("Phone number not found");
+        alertDialog.setMessage("Please input your phone number to begin using!");
+
         final EditText input = new EditText(this);
-        input.setInputType(InputType.TYPE_CLASS_PHONE);
-        builder.setView(input);
-        builder.setPositiveButton("OK", (dialog, which) ->
-                phoneNumber[0] = input.getText().toString());
-        builder.show();
+        input.setMaxLines(1);
+
+        // Deal with keyboard enter IME action
+        input.setImeOptions(EditorInfo.IME_ACTION_DONE);
+        input.setInputType(InputType.TYPE_CLASS_NUMBER);
+
+        input.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                if (input.getText() != null && isMobile(input.getText().toString())) {
+                    // call alertDialog's on click
+                    alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).callOnClick();
+                }
+            }
+            return false;
+        });
+
+        input.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s == null || s.length() == 0 || !isMobile(s.toString())) {
+                    alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+                    alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getColor(R.color.main_style_sandDlooar));
+                } else {
+                    alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
+                    alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getColor(R.color.main_style_carafe));
+                }
+            }
+        });
+
+        alertDialog.setView(input);
+
+        alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "OK",
+                (dialog, which) -> {
+                    phoneNumber[0] = input.getText().toString();
+                    alertDialog.dismiss();
+                });
+
+        alertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        alertDialog.show();
     }
 
 

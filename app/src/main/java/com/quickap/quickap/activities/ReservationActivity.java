@@ -43,7 +43,7 @@ public class ReservationActivity extends AppCompatActivity implements View.OnCli
     private ActivityReservationBinding reservationBinding;
     private PopupViewBinding popupViewBinding;
     View V = null;
-    String phoneNumber1 = "123456";
+    String phoneNumber1;
 
 
     @Override

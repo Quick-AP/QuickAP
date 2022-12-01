@@ -15,18 +15,21 @@ public class MenuController implements Parcelable {
 
     private final HashMap<String, MenuItem> orderMap;
 
-    private static class MenuItem implements Parcelable{
+    public static class MenuItem implements Parcelable {
         public int amount;
         public double price;
+        public String name;
 
         protected MenuItem() {
             amount = 0;
             price = 0.0;
+            name = null;
         }
 
         protected MenuItem(Parcel in) {
             amount = in.readInt();
             price = in.readDouble();
+            name = in.readString();
         }
 
         public static final Creator<MenuItem> CREATOR = new Creator<MenuItem>() {
@@ -50,6 +53,7 @@ public class MenuController implements Parcelable {
         public void writeToParcel(Parcel dest, int flags) {
             dest.writeInt(amount);
             dest.writeDouble(price);
+            dest.writeString(name);
         }
     }
 
@@ -116,6 +120,7 @@ public class MenuController implements Parcelable {
             MenuItem item = new MenuItem();
             item.amount = 1;
             item.price = food.getPrice();
+            item.name = food.getName();
             orderMap.put(food.getFoodID(), item);
         } else {
             Objects.requireNonNull(orderMap.get(food.getFoodID())).amount += 1;
@@ -171,4 +176,7 @@ public class MenuController implements Parcelable {
     }
 
 
+    public HashMap<String, MenuItem> getOrderMap() {
+        return orderMap;
+    }
 }
