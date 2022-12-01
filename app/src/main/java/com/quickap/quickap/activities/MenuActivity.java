@@ -22,6 +22,7 @@ public class MenuActivity extends AppCompatActivity {
     private MenuController menuController;
 
     private int tableID;
+    private String phoneNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,12 +35,15 @@ public class MenuActivity extends AppCompatActivity {
         View menuView = this.menuBinding.getRoot();
         setContentView(menuView);
 
-//        this.tableID =
         Bundle extras = getIntent().getExtras();
         this.tableID = extras.getInt("tableId");
+        this.phoneNumber = extras.getString("phoneNumber");
         Log.d("DEBUG: tableId passing", String.valueOf(this.tableID));
+        Log.d("DEBUG: phoneNumber passing", String.valueOf(this.phoneNumber));
 
-                // TODO: Load Food Array List from json
+        // TODO: Register table API call
+
+        // TODO: Load Food Array List from json
         MenuGridViewAdapter menuGridViewAdapter = new MenuGridViewAdapter(
                 MenuActivity.this,
                 new FoodArrayListModel().generateDummyData(),

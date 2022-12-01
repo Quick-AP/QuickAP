@@ -56,24 +56,24 @@ public class ReservationActivity extends AppCompatActivity implements View.OnCli
 
         Button queueButton = reservationBinding.queuingButton;
         queueButton.setOnClickListener(this);
+        Bundle extras = getIntent().getExtras();
+        this.phoneNumber1 = extras.getString("phoneNumber");
     }
 
     @Override
     public void onClick(View view){
-
         V = view;
+
         register(V, phoneNumber1);
-        int res = queue(V,phoneNumber1);
+        int res = queue(V, phoneNumber1);
+
         if(res != 0){
-//        if(false){
             View successView = getLayoutInflater().inflate(R.layout.success, null);
             TextView text = successView.findViewById(R.id.QueueSuccessHint);
             int rank = queue(V, phoneNumber1);
             text.setText("Your rank is:"+rank);
             PopupWindow sucessWindow = new PopupWindow(successView, ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT,true);
             sucessWindow.showAsDropDown(V,(int)(0.5*V.getWidth()),(int)0.5*V.getHeight());
-
-
 
             Notification notification = null;
             NotificationManager manager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
@@ -111,18 +111,20 @@ public class ReservationActivity extends AppCompatActivity implements View.OnCli
                         .setSmallIcon(R.mipmap.ic_launcher)
                         .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher));
                 Intent intent =new Intent (ReservationActivity.this,NotificationClickReceiver.class);
-                PendingIntent pendingIntent =PendingIntent.getBroadcast(ReservationActivity.this, 0, intent, 0);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(ReservationActivity.this, 0, intent, 0);
 //                builder.setContentIntent(pendingIntent);
 //                notification = builder.build();
             }
             ask(manager,notification, phoneNumber1);
 
-        }else{
-            Intent intent= new Intent();
-            intent.setClass(ReservationActivity.this, com.quickap.quickap.activities.FirstFloor.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
+        }
+        else {
 
+            Intent intent = new Intent(view.getContext(), FirstFloor.class);
+            Bundle bundle = new Bundle();
+            bundle.putString("phoneNumber", this.phoneNumber1);
+            intent.putExtras(bundle);
+            startActivity(intent);
 
 //            View successView = getLayoutInflater().inflate(R.layout.success, null);
 //            TextView text = successView.findViewById(R.id.QueueSuccessHint);
@@ -132,13 +134,16 @@ public class ReservationActivity extends AppCompatActivity implements View.OnCli
         }
 
     }
+
     public int register(View view, String phoneNumber){
         QueueRegisterThread queueRegisterThread = new QueueRegisterThread();
         queueRegisterThread.setView(view);
         queueRegisterThread.setPhoneNumber(phoneNumber);
         Thread thread = new Thread(queueRegisterThread);
         thread.start();
+
         while(queueRegisterThread.getRes() == null){}
+
         String res = queueRegisterThread.getRes();
         try {
             JSONObject obj = new JSONObject(res);
@@ -149,6 +154,7 @@ public class ReservationActivity extends AppCompatActivity implements View.OnCli
 
         return -3;
     }
+
     public int queue(View view, String phoneNumber){
         QueuequeueThread queueRegisterThread = new QueuequeueThread();
         queueRegisterThread.setView(view);

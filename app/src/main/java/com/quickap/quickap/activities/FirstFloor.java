@@ -112,8 +112,10 @@ public class FirstFloor extends AppCompatActivity implements View.OnClickListene
             v.setImageResource(R.drawable.seat_inside_selected);
         }
         Intent menu = new Intent(this, MenuActivity.class);
+        Bundle extras = getIntent().getExtras();
         Bundle bundle = new Bundle();
         bundle.putInt("tableId", table_id);
+        bundle.putString("phoneNumber", extras.getString("phoneNumber"));
         menu.putExtras(bundle);
         startActivity(menu);
     }

@@ -53,7 +53,7 @@ public class GetPostUtil {
     }
     public static String sendPost2(String url, String params){
         InputStream inputStream = getInputStreamPost(url,params);
-        String result= null;
+        String result = null;
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream,"utf-8"));
             result = "";
@@ -68,12 +68,11 @@ public class GetPostUtil {
             }
             System.out.println(result);
             httpURLConnection.disconnect();
-        } catch (UnsupportedEncodingException e) {
+        } catch (UnsupportedEncodingException | NullPointerException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return result;
-
     }
     /**
      * 获取服务端的数据，以InputStream返回
