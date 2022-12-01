@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         binding.jumpToMap.setOnClickListener(view -> {
-            Intent intent = new Intent(view.getContext(), FirstFloor.class);
+            Intent intent = new Intent(view.getContext(), SecondFloor.class);
             Bundle bundle = new Bundle();
             bundle.putString("phoneNumber", phoneNumber[0]);
             intent.putExtras(bundle);

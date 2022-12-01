@@ -16,6 +16,7 @@ import com.google.android.material.snackbar.Snackbar;
 public class FirstFloor extends AppCompatActivity implements View.OnClickListener {
 
     private FloorFirstBinding binding;
+    private String phoneNumber;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -24,9 +25,15 @@ public class FirstFloor extends AppCompatActivity implements View.OnClickListene
         binding = FloorFirstBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        Bundle extras = getIntent().getExtras();
+        this.phoneNumber = extras.getString("phoneNumber");
+
         ImageView stair_up = binding.stairUp;
         stair_up.setOnClickListener(view -> {
             Intent intent = new Intent(view.getContext(), SecondFloor.class);
+            Bundle bundle = new Bundle();
+            bundle.putString("phoneNumber", this.phoneNumber);
+            intent.putExtras(bundle);
             startActivity(intent);
         });
 
@@ -111,11 +118,10 @@ public class FirstFloor extends AppCompatActivity implements View.OnClickListene
         } else {
             v.setImageResource(R.drawable.seat_inside_selected);
         }
-        Intent menu = new Intent(this, MenuActivity.class);
-        Bundle extras = getIntent().getExtras();
+        Intent menu = new Intent(getApplicationContext(), MenuActivity.class);
         Bundle bundle = new Bundle();
         bundle.putInt("tableId", table_id);
-        bundle.putString("phoneNumber", extras.getString("phoneNumber"));
+        bundle.putString("phoneNumber", this.phoneNumber);
         menu.putExtras(bundle);
         startActivity(menu);
     }

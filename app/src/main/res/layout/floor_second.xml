@@ -9,10 +9,10 @@
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <LinearLayout
-            android:layout_width="601dp"
-            android:layout_height="190dp"
-            android:background="@drawable/street_1" />
+<!--        <LinearLayout-->
+<!--            android:layout_width="601dp"-->
+<!--            android:layout_height="190dp"-->
+<!--            android:background="@drawable/street_1" />-->
 
         <TableRow
             android:layout_width="610dp"
@@ -123,9 +123,9 @@
                     app:srcCompat="@drawable/stair_sec" />
             </TableRow>
         </LinearLayout>
-        <LinearLayout
-            android:layout_width="601dp"
-            android:layout_height="190dp"
-            android:background="@drawable/street_1" />
+<!--        <LinearLayout-->
+<!--            android:layout_width="601dp"-->
+<!--            android:layout_height="190dp"-->
+<!--            android:background="@drawable/street_1" />-->
     </TableLayout>
 </ScrollView>
