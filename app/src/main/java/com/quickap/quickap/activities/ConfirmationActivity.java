@@ -9,6 +9,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.quickap.quickap.controller.MenuController;
 import com.quickap.quickap.databinding.ActivityConfirmationBinding;
+import com.quickap.quickap.utils.PlaceOrderThread;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Locale;
 import java.util.Map;
@@ -41,7 +45,35 @@ public class ConfirmationActivity extends AppCompatActivity {
         }
 
         binding.confirmationTextView.setText(getOrderSummary());
+
+
+        if(placeOrder() == -1) {
+            Log.d("ERROR", "Failed to get response for menu ordering");
+        }
     }
+
+    private int placeOrder() {
+        String orderSummary = getOrderSummary();
+        Log.d("DEBUG", orderSummary);
+        PlaceOrderThread placeOrderThread = new PlaceOrderThread();
+        placeOrderThread.setMenuJson(getOrderJsonSummary());
+        Thread thread = new Thread(placeOrderThread);
+        thread.start();
+
+        while(placeOrderThread.getResponse() == null){}
+
+        JSONObject res = placeOrderThread.getResponse();
+
+        try {
+            return res.getInt("status");
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+
 
     private String getOrderSummary() {
         StringBuilder orderSummary = new StringBuilder();
@@ -59,8 +91,10 @@ public class ConfirmationActivity extends AppCompatActivity {
 
 
     private String getOrderJsonSummary() {
-        return String.format(Locale.ENGLISH, "{\"tableId\":%d,\"foodIDList\":%s}",
-                this.tableId,
-                this.menuController.getFoodListJson());
+        return this.menuController.getDTOListJson(this.tableId);
+//
+//        return String.format(Locale.ENGLISH, "{\"tableId\":%d,\"foodIDList\":%s}",
+//                this.tableId,
+//                this.menuController.getFoodListJson());
     }
 }

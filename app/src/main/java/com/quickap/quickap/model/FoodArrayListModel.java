@@ -3,7 +3,9 @@ package com.quickap.quickap.model;
 
 import android.util.Log;
 
+import com.quickap.quickap.utils.GetMenuThread;
 import com.quickap.quickap.utils.JSONParser;
+import com.quickap.quickap.utils.TableStateThread;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -72,8 +74,18 @@ public class FoodArrayListModel {
     public ArrayList<FoodModel> getFoodArrayListFromURL(String url) {
         ArrayList<FoodModel> foodList = new ArrayList<>();
         //TODO: Populate this with JSON response
-        JSONObject json = JSONParser.getJsonFromURL(url);
-        FoodArrayListModel.populateFoodArrayListWithJson(json, foodList);
+        Log.d("DEBUG", url);
+
+        GetMenuThread menu_state = new GetMenuThread();
+
+        Thread thread = new Thread(menu_state);
+        thread.start();
+        try{
+            thread.join();
+        }catch (Exception ignore){
+            System.out.println("Ignore a mistake");
+        }
+        FoodArrayListModel.populateFoodArrayListWithJson(menu_state.getRes(), foodList);
         return foodList;
     }
 

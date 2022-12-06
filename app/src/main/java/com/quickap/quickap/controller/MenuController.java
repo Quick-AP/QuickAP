@@ -161,6 +161,25 @@ public class MenuController implements Parcelable {
             return 0;
     }
 
+    public String getDTOListJson(int tableId) {
+        StringBuilder dtoListJson = new StringBuilder();
+        dtoListJson.append("[");
+
+        for (Map.Entry<String, MenuItem> entry: orderMap.entrySet()) {
+            for (int i = 0; i < entry.getValue().amount; i++) {
+                dtoListJson.append(
+                        String.format(
+                                Locale.ENGLISH,
+                                "{\"tableId\":%d, \"foodId\":\"%s\", \"price\":%.2f},",
+                                tableId, entry.getKey(), entry.getValue().price));
+            }
+        }
+
+
+        dtoListJson.setCharAt(dtoListJson.length()-1, ']');
+        return dtoListJson.toString();
+    }
+
     public String getFoodListJson() {
         StringBuilder foodListJson = new StringBuilder();
         foodListJson.append("[");

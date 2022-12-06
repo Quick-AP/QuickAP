@@ -1,12 +1,14 @@
 package com.quickap.quickap.utils;
 
+import android.util.Log;
+
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class RegisterTableThread implements Runnable {
     private int tableId;
     private String phoneNumber;
-    private JSONObject response;
-
+    private String response;
 
     public void setTableId(int tableId) {
         this.tableId = tableId;
@@ -17,13 +19,21 @@ public class RegisterTableThread implements Runnable {
     }
 
     public JSONObject getResponse() {
-        return response;
+        try {
+            while (response == null) {}
+            JSONObject json = new JSONObject(response);
+            return json;
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
     public void run() {
-        String paramJson = "{\"tableId\":" + this.tableId + "\"phoneNumber\":" + this.phoneNumber + "}";
-        this.response = GetPostUtil.sendPostJSON("http://10.0.2.2:8081/table/register", paramJson);
+        String paramJson = "{\"tableId\":" + this.tableId + ",\"phoneNumber\":" + this.phoneNumber + "}";
+        Log.d("Json", paramJson);
+        this.response = GetPostUtil.postJson("http://"+Settings.HOST+":8081/table/register", paramJson);
     }
 
 
