@@ -1,17 +1,29 @@
 package com.quickap.quickap.activities;
 
+import android.Manifest;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.os.Build;
+import android.telephony.TelephonyManager;
+import android.text.Editable;
+import android.text.InputType;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.app.*;
@@ -24,6 +36,8 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,6 +51,9 @@ import com.quickap.quickap.utils.QueueAskThread;
 
 import com.quickap.quickap.design.NotificationClickReceiver;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class ReservationActivity extends AppCompatActivity implements View.OnClickListener{
     int count = 1;
 
@@ -44,6 +61,108 @@ public class ReservationActivity extends AppCompatActivity implements View.OnCli
     private PopupViewBinding popupViewBinding;
     View V = null;
     String phoneNumber1;
+
+
+
+
+    /**
+     * Utility to confirm if a input Stirng is a valid mobile number in China using Regular Expression.
+     * Regex refered from: https://blog.csdn.net/cm519096/article/details/126370622.
+     * @param mobile input string.
+     * @return boolean identifying if the input string is a valid mobile number.
+     */
+    public static boolean isMobile(String mobile) {
+        if (mobile == null) return false;
+        String regex = "^((13[0-9])|(14[0,1,4-9])|(15[0-3,5-9])|(16[2,5,6,7])|(17[0-8])|(18[0-9])|(19[0-3,5-9]))\\d{8}$";
+        Pattern p = Pattern.compile(regex);
+        Matcher m = p.matcher(mobile);
+        return m.matches();
+    }
+
+    /**
+     * Get Phone number from the system as a String, returns null if failed.
+     * @return phone number of the user's device, of null when failed.
+     */
+    private String getPhoneNumberFromSystem() {
+        TelephonyManager telephonyManager =
+                (TelephonyManager) getApplicationContext()
+                        .getSystemService(TELEPHONY_SERVICE);
+
+        boolean permissionsNotGranted = ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_NUMBERS) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED;
+
+        if (permissionsNotGranted) {
+            return null;
+        }
+
+        String phoneNumber = telephonyManager.getLine1Number();
+        return isMobile(phoneNumber) ? phoneNumber : null;
+    }
+
+    /**
+     * Display pop-up and save obtained phone number in a given String array.
+     * @param phoneNumber Single element String array to save the user inputted phone number
+     */
+    public void getPhoneNumberFromUser(String[] phoneNumber){
+
+
+        final androidx.appcompat.app.AlertDialog alertDialog = new androidx.appcompat.app.AlertDialog.Builder(this).create();
+        alertDialog.setTitle("Phone number not found");
+        alertDialog.setMessage("Please input your phone number to begin using!");
+
+        final EditText input = new EditText(this);
+        input.setMaxLines(1);
+
+        // Deal with keyboard enter IME action
+        input.setImeOptions(EditorInfo.IME_ACTION_DONE);
+        input.setInputType(InputType.TYPE_CLASS_NUMBER);
+
+        input.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                if (input.getText() != null && isMobile(input.getText().toString())) {
+                    // call alertDialog's on click
+                    alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).callOnClick();
+                }
+            }
+            return false;
+        });
+
+        input.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s == null || s.length() == 0 || !isMobile(s.toString())) {
+                    alertDialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+                    alertDialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE).setTextColor(getColor(R.color.main_style_sandDlooar));
+                } else {
+                    alertDialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE).setEnabled(true);
+                    alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getColor(R.color.main_style_carafe));
+                }
+            }
+        });
+
+        alertDialog.setView(input);
+
+        alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "OK",
+                (dialog, which) -> {
+                    phoneNumber[0] = input.getText().toString();
+                    alertDialog.dismiss();
+                });
+
+        alertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        alertDialog.show();
+    }
+
 
 
     @Override
@@ -54,10 +173,18 @@ public class ReservationActivity extends AppCompatActivity implements View.OnCli
         View reservationView = this.reservationBinding.getRoot();
         setContentView(reservationView);
 
+        // Try getting phone number from system
+        final String[] phoneNumber = {getPhoneNumberFromSystem()};
+        // if failed to obtai, then get from user
+        if (phoneNumber[0] == null || !isMobile(phoneNumber[0])) {
+            getPhoneNumberFromUser(phoneNumber);
+        }
+
         Button queueButton = reservationBinding.queuingButton;
         queueButton.setOnClickListener(this);
         Bundle extras = getIntent().getExtras();
-        this.phoneNumber1 = extras.getString("phoneNumber");
+//        this.phoneNumber1 = extras.getString("phoneNumber");
+        this.phoneNumber1 = phoneNumber[0];
     }
 
     @Override
