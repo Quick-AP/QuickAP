@@ -23,7 +23,7 @@ public class QueuequeueThread implements Runnable{
         return res;
     }
     public void run(){
-        res = GetPostUtil.sendPost("http://10.0.2.2:8081/queue/query?phoneNumber=" + phoneNumber, null);
+        res = GetPostUtil.sendPost("http://"+Settings.HOST+":8081/queue/query?phoneNumber=" + phoneNumber, null);
     }
     public int queue(String phoneNumber){
         QueuequeueThread queueRegisterThread = new QueuequeueThread();

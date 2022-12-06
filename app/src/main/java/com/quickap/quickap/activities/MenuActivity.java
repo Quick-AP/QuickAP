@@ -16,6 +16,7 @@ import com.quickap.quickap.databinding.ActivityMenuBinding;
 import com.quickap.quickap.design.MenuGridViewAdapter;
 import com.quickap.quickap.model.FoodArrayListModel;
 import com.quickap.quickap.utils.RegisterTableThread;
+import com.quickap.quickap.utils.Settings;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -46,16 +47,16 @@ public class MenuActivity extends AppCompatActivity {
         Log.d("DEBUG: phoneNumber passing", String.valueOf(this.phoneNumber));
 
         // TODO: UNCOMMENT THIS
-//        if(registerTable(this.phoneNumber, this.tableID) != 0) {
-//            Log.d("DEBUG: FAILED TO REGISTER TABLE", String.valueOf(this.tableID));
-//            throw new RuntimeException("Failed to register table " + this.tableID);
-//        }
+        if(registerTable(this.phoneNumber, this.tableID) == -1) {
+            Log.d("DEBUG: FAILED TO REGISTER TABLE", String.valueOf(this.tableID));
+            throw new RuntimeException("Failed to register table " + this.tableID);
+        }
 
         // TODO: Load Food Array List from json
         MenuGridViewAdapter menuGridViewAdapter = new MenuGridViewAdapter(
                 MenuActivity.this,
-//                new FoodArrayListModel().getFoodArrayListFromURL("URL"),
-                new FoodArrayListModel().generateDummyData(),
+                new FoodArrayListModel().getFoodArrayListFromURL("http://"+ Settings.HOST+":8081/queryFoodMenu"),
+//                new FoodArrayListModel().generateDummyData(),
                 this.menuController
         );
 
@@ -86,6 +87,7 @@ public class MenuActivity extends AppCompatActivity {
                 Bundle menuOrderBundle = new Bundle();
                 // Parcel menuController and place into Bundle
                 menuOrderBundle.putParcelable("MENU_CONTROLLER", this.menuController);
+                menuOrderBundle.putInt("tableId", this.tableID);
                 Intent menuOrderIntent = new Intent(getApplicationContext(), ConfirmationActivity.class);
                 menuOrderIntent.putExtras(menuOrderBundle);
                 startActivity(menuOrderIntent);

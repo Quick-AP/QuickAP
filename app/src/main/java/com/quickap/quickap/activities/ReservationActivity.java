@@ -7,35 +7,26 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Build;
+import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
-import android.os.Bundle;
-import android.app.*;
-import android.content.Intent;
-import android.graphics.BitmapFactory;
-import android.os.Build;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.PopupWindow;
-import android.widget.TextView;
-import androidx.appcompat.app.AppCompatActivity;
-import android.os.Bundle;
 import androidx.core.app.NotificationCompat;
-import org.json.JSONException;
-import org.json.JSONObject;
+
 import com.quickap.quickap.R;
 import com.quickap.quickap.databinding.ActivityReservationBinding;
 import com.quickap.quickap.databinding.PopupViewBinding;
+import com.quickap.quickap.design.NotificationClickReceiver;
+import com.quickap.quickap.utils.QueueAskThread;
 import com.quickap.quickap.utils.QueueRegisterThread;
 import com.quickap.quickap.utils.QueuequeueThread;
-import com.quickap.quickap.utils.QueueAskThread;
 
-
-import com.quickap.quickap.design.NotificationClickReceiver;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class ReservationActivity extends AppCompatActivity implements View.OnClickListener{
     int count = 1;
@@ -54,10 +45,11 @@ public class ReservationActivity extends AppCompatActivity implements View.OnCli
         View reservationView = this.reservationBinding.getRoot();
         setContentView(reservationView);
 
-        Button queueButton = reservationBinding.queuingButton;
-        queueButton.setOnClickListener(this);
         Bundle extras = getIntent().getExtras();
         this.phoneNumber1 = extras.getString("phoneNumber");
+
+        Button queueButton = reservationBinding.queuingButton;
+        queueButton.setOnClickListener(this);
     }
 
     @Override
@@ -66,6 +58,7 @@ public class ReservationActivity extends AppCompatActivity implements View.OnCli
 
         register(V, phoneNumber1);
         int res = queue(V, phoneNumber1);
+//        int res = 0;
 
         if(res != 0){
             View successView = getLayoutInflater().inflate(R.layout.success, null);

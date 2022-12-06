@@ -9,7 +9,7 @@ import android.view.View;
  ***/
 
 
-public class QueueRegisterThread implements Runnable{
+public class QueueRegisterThread implements Runnable {
 
         private View v;
         private String res;
@@ -25,7 +25,7 @@ public class QueueRegisterThread implements Runnable{
             return res;
         }
         public void run(){
-            res = GetPostUtil.sendPost2("http://10.0.2.2:8081/queue/register","{\"phoneNumber\":"+phoneNumber+"}");
+            res = GetPostUtil.postJson("http://"+Settings.HOST+":8081/queue/register","{\"phoneNumber\":"+phoneNumber+"}");
         }
 
 }

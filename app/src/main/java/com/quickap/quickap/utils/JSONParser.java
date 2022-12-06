@@ -9,15 +9,23 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.net.URLConnection;
 
 public class JSONParser {
 
     public static JSONObject getJsonFromURL(String urlString) {
         try {
             URL url = new URL(urlString);
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(url.openConnection().getInputStream()));
+            Log.d("DEBUG", String.valueOf(url));
+            URLConnection conn =  url.openConnection();
+            Log.d("DEBUG", String.valueOf(conn));
+            InputStream is = conn.getInputStream();
+            Log.d("DEBUG", String.valueOf(is));
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(is));
+            Log.d("DEBUG", String.valueOf(bufferedReader));
             return getJsonFromBufferedReader(bufferedReader);
         } catch (IOException | JSONException e) {
             Log.e("JSONParser",
@@ -32,6 +40,7 @@ public class JSONParser {
         String line;
         while ((line = bufferedReader.readLine()) != null)
             stringBuffer.append(line);
+        Log.d("DEBUG", stringBuffer.toString());
         return new JSONObject(stringBuffer.toString());
     }
 
