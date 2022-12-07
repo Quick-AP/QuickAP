@@ -177,7 +177,7 @@ public class MenuController implements Parcelable {
 
 
         dtoListJson.setCharAt(dtoListJson.length()-1, ']');
-        return dtoListJson.toString();
+            return dtoListJson.toString();
     }
 
     public String getFoodListJson() {

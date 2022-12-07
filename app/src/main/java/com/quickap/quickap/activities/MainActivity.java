@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Utility to confirm if a input Stirng is a valid mobile number in China using Regular Expression.
-     * Regex refered from: https://blog.csdn.net/cm519096/article/details/126370622.
+     * Regex referred from: https://blog.csdn.net/cm519096/article/details/126370622.
      * @param mobile input string.
      * @return boolean identifying if the input string is a valid mobile number.
      */
@@ -83,7 +83,6 @@ public class MainActivity extends AppCompatActivity {
      * @param phoneNumber Single element String array to save the user inputted phone number
      */
     public void getPhoneNumberFromUser(String[] phoneNumber){
-
 
         final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
         alertDialog.setTitle("Phone number not found");
