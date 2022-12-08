@@ -182,8 +182,6 @@ public class ReservationActivity extends AppCompatActivity implements View.OnCli
 
         Button queueButton = reservationBinding.queuingButton;
         queueButton.setOnClickListener(this);
-        Bundle extras = getIntent().getExtras();
-//        this.phoneNumber1 = extras.getString("phoneNumber");
         this.phoneNumber1 = phoneNumber[0];
     }
 
