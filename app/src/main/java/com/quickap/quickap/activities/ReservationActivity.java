@@ -220,11 +220,16 @@ public class ReservationActivity extends AppCompatActivity implements View.OnCli
                         .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher));
 
                try{
-                   Intent intent =new Intent (ReservationActivity.this, NotificationClickReceiver.class);
+                   Log.d("NOT1", this.phoneNumber[0]);
+                   Intent intent = new Intent (ReservationActivity.this, NotificationClickReceiver.class);
+                   intent.putExtra("phoneNumber", this.phoneNumber[0]);
                    PendingIntent pendingIntent;
                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+                       Log.d("NOT1", "pd1");
                        pendingIntent = PendingIntent.getActivity(ReservationActivity.this, 123, intent, PendingIntent.FLAG_IMMUTABLE);
-                   } else {
+                   }
+                   else {
+                       Log.d("NOT1", "pd2");
                        pendingIntent = PendingIntent.getActivity(ReservationActivity.this, 123, intent, PendingIntent.FLAG_ONE_SHOT);
                    }
                    builder.setContentIntent(pendingIntent);
@@ -233,16 +238,19 @@ public class ReservationActivity extends AppCompatActivity implements View.OnCli
                    System.out.println();
                }
             }else{
+                Log.d("NOT2", this.phoneNumber[0]);
                 NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                         .setContentTitle("Your can register table now")
                         .setContentText("you are O")
                         .setWhen(System.currentTimeMillis())
                         .setSmallIcon(R.mipmap.ic_launcher)
                         .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher));
-                Intent intent =new Intent (ReservationActivity.this,NotificationClickReceiver.class);
+                Intent intent = new Intent (ReservationActivity.this,NotificationClickReceiver.class);
+                intent.putExtra("phoneNumber", this.phoneNumber[0]);
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(ReservationActivity.this, 0, intent, 0);
-//                builder.setContentIntent(pendingIntent);
-//                notification = builder.build();
+
+                builder.setContentIntent(pendingIntent);
+                notification = builder.build();
             }
             ask(manager,notification, phoneNumber[0]);
 
@@ -251,6 +259,7 @@ public class ReservationActivity extends AppCompatActivity implements View.OnCli
 
             Intent intent = new Intent(view.getContext(), FirstFloor.class);
             Bundle bundle = new Bundle();
+            Log.d("intent triggered", String.valueOf(this.phoneNumber[0] == null));
             bundle.putString("phoneNumber", this.phoneNumber[0]);
             intent.putExtras(bundle);
             startActivity(intent);

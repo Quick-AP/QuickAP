@@ -51,6 +51,7 @@ public class QueueAskThread implements Runnable{
 
         manager.notify(1,notification);
         Intent intent= new Intent();
+        intent.putExtra("phoneNumber", this.phoneNumber);
         intent.setClass(mContext, com.quickap.quickap.activities.FirstFloor.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         mContext.startActivity(intent);
