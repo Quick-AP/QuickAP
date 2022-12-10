@@ -14,6 +14,7 @@ import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -60,8 +61,8 @@ public class ReservationActivity extends AppCompatActivity implements View.OnCli
     private ActivityReservationBinding reservationBinding;
     private PopupViewBinding popupViewBinding;
     View V = null;
-    String phoneNumber1;
-
+//    String phoneNumber1;
+    String[] phoneNumber;
 
 
 
@@ -156,6 +157,7 @@ public class ReservationActivity extends AppCompatActivity implements View.OnCli
         alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "OK",
                 (dialog, which) -> {
                     phoneNumber[0] = input.getText().toString();
+                    Log.d("DEBUG", phoneNumber[0]);
                     alertDialog.dismiss();
                 });
 
@@ -174,28 +176,30 @@ public class ReservationActivity extends AppCompatActivity implements View.OnCli
         setContentView(reservationView);
 
         // Try getting phone number from system
-        final String[] phoneNumber = {getPhoneNumberFromSystem()};
+        this.phoneNumber = new String[]{getPhoneNumberFromSystem()};
         // if failed to obtai, then get from user
         if (phoneNumber[0] == null || !isMobile(phoneNumber[0])) {
             getPhoneNumberFromUser(phoneNumber);
+
         }
 
         Button queueButton = reservationBinding.queuingButton;
         queueButton.setOnClickListener(this);
-        this.phoneNumber1 = phoneNumber[0];
+//        this.phoneNumber1 = phoneNumber[0];
+
     }
 
     @Override
     public void onClick(View view){
         V = view;
 
-        register(V, phoneNumber1);
-        int res = queue(V, phoneNumber1);
+        register(V, phoneNumber[0]);
+        int res = queue(V, phoneNumber[0]);
 
         if(res != 0){
             View successView = getLayoutInflater().inflate(R.layout.success, null);
             TextView text = successView.findViewById(R.id.QueueSuccessHint);
-            int rank = queue(V, phoneNumber1);
+            int rank = queue(V, phoneNumber[0]);
             text.setText("Your rank is:"+rank);
             PopupWindow sucessWindow = new PopupWindow(successView, ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT,true);
             sucessWindow.showAsDropDown(V,(int)(0.5*V.getWidth()),(int)0.5*V.getHeight());
@@ -240,14 +244,14 @@ public class ReservationActivity extends AppCompatActivity implements View.OnCli
 //                builder.setContentIntent(pendingIntent);
 //                notification = builder.build();
             }
-            ask(manager,notification, phoneNumber1);
+            ask(manager,notification, phoneNumber[0]);
 
         }
         else {
 
             Intent intent = new Intent(view.getContext(), FirstFloor.class);
             Bundle bundle = new Bundle();
-            bundle.putString("phoneNumber", this.phoneNumber1);
+            bundle.putString("phoneNumber", this.phoneNumber[0]);
             intent.putExtras(bundle);
             startActivity(intent);
 
